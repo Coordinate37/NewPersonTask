@@ -47,7 +47,10 @@ def CalSqrTri(data, op_list):
     return result
 
 def CalFac(data, op_list):
-    result = float(data)
+    try:
+        result = float(data)
+    except (ValueError, SyntaxError, NameError):
+        return 'Invalid formula'
     if len(op_list) and result != int(result):
         return None
     for i in range(len(op_list)):
@@ -56,8 +59,6 @@ def CalFac(data, op_list):
     return result
 
 def Calculate1(formula):  
-    if formula.endswith("+") or formula.endswith("-"):
-        return "Invalid formula"
     op_list = re.findall('!', formula)
     data = formula.replace('!', '')
     data = data.replace('+-', '-')
