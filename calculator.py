@@ -128,7 +128,7 @@ def ParseBracket(data_with_bracket):
                 data_in_bracket = data_in_bracket.replace(op, op[0] + 'm' + op[2])
             m = re.search('[0-9!][+-][0-9scv+-]', data_in_bracket)
         value = str(Calculate5(data_in_bracket))
-        if not value.isdigit():
+        if value == 'Invalid formula':
             return value
 
         data_with_bracket = data_with_bracket.replace(data_with_bracket[left_bracket:first_right_bracket+1], value)
