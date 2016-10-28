@@ -12,8 +12,17 @@ def CalPlusMinus(data, op_list):
 
     return result
 
+def CalAnd(data, op_list):
+    result = data[0]
+    for i in range(len(op_list)):
+        if op_list[i] == '&':
+            result = int(result)
+            result &= int(data[i+1])
+
+    return result
+
 def CalMulDiv(data, op_list):
-    result = float(data[0])
+    result = data[0]
     for i in range(len(op_list)):
         if op_list[i] == '*':
             result *= data[i+1]
@@ -27,7 +36,7 @@ def CalMulDiv(data, op_list):
     return result
 
 def CalPow(data, op_list):
-    result = float(data[0])
+    result = data[0]
     for i in range(len(op_list)):
         if op_list[i] == '^':
             result = math.pow(result, data[i+1])
@@ -35,7 +44,7 @@ def CalPow(data, op_list):
     return result
 
 def CalSqrTri(data, op_list):
-    result = float(data)
+    result = data
     for i in range(len(op_list)):
         if op_list[i] == 'v':
             result = math.sqrt(result)
@@ -50,7 +59,7 @@ def CalFac(data, op_list):
     try:
         result = float(data)
     except (ValueError, SyntaxError, NameError):
-        return 'Invalid formula'
+        return 'Invalid formula' 
     if len(op_list) and result != int(result):
         return None
     for i in range(len(op_list)):
@@ -101,13 +110,23 @@ def Calculate4(formula):
 
     return CalMulDiv(data, op_list)
 
+def CalAddition(formula):
+    op_list = re.findall('&', formula)
+    data = re.split('&', formula)
+    for i in range(len(data)):
+        data[i] = Calculate4(data[i])
+        if type(data[i]) == type(''):
+            return data[i]
+
+    return CalAnd(data, op_list)
+
 def Calculate5(formula):
     #print formula
     op_list = re.findall('[pm]', formula)
     data = re.split('[pm]', formula)
     #print data
     for i in range(len(data)):
-        data[i] = Calculate4(data[i])
+        data[i] = CalAddition(data[i])
         if type(data[i]) == type(''):
             return data[i]
 
